@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Client-side URL rewrite for /adm route
+        if (window.location.pathname.endsWith('/adm') || window.location.pathname.endsWith('/adm/')) {
+            let newPath = window.location.pathname.replace(/\/adm\/?$/, '');
+            window.location.href = window.location.protocol + '//' + (window.location.host || '') + newPath + '#/adm';
+        }
+    </script>
+    <title>Triagem Informativa Previdenciária - Conectando você a orientações seguras</title>
+    <style>
+        /* CSS Variables & Theme Config */
+        :root {
+            --primary: #1e40af;       /* Azul Escuro Confiável */
+            --primary-light: #eff6ff; /* Fundo Azul Claro */
+            --primary-hover: #1d4ed8;
+            --secondary: #059669;     /* Verde Suave */
+            --secondary-light: #ecfdf5; /* Fundo Verde Claro */
+            --secondary-hover: #047857;
+            --accent: #10b981;
+            --background: #f8fafc;    /* Fundo da Página */
+            --surface: #ffffff;       /* Fundo dos Cards */
+            --text-main: #1e293b;     /* Texto Principal */
+            --text-muted: #64748b;    /* Texto de Apoio */
+            --border: #e2e8f0;        /* Bordas Suaves */
+            --error: #ef4444;         /* Vermelho Erro */
+            --success: #10b981;       /* Verde Sucesso */
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Resets & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* App Container (Mobile-first Layout) */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: var(--surface);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        /* Header Brand */
+        .app-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--surface);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .brand-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--secondary);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: var(--secondary);
+            font-weight: 600;
+            background-color: var(--secondary-light);
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .security-badge svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* Main Content wrapper */
+        .app-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 32px 20px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--primary-light) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .hero-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-primary:active {
+            background-color: var(--secondary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background-color: #dbeafe;
+        }
+
+        .btn-link {
+            background: none;
+            box-shadow: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: underline;
+            padding: 12px;
+        }
+
+        .btn-link:hover {
+            color: var(--primary);
+        }
+
+        /* Trust Block */
+        .trust-block {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+            background-color: var(--surface);
+            padding: 12px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .trust-item svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--secondary);
+        }
+
+        /* How it Works Section */
+        .steps-section {
+            padding: 32px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .step-card {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background-color: var(--background);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 800;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .step-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            display: none; /* Controlled by JS */
+            flex-direction: column;
+            flex: 1;
+            padding: 24px 20px;
+            background-color: var(--surface);
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            margin-bottom: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .progress-track {
+            height: 6px;
+            background-color: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Quiz Steps */
+        .quiz-step {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .quiz-step.active {
+            display: block;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .question-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Custom Radio Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: var(--surface);
+        }
+
+        .option-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .option-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .option-circle::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: block;
+            transform: scale(0);
+            transition: var(--transition);
+        }
+
+        .option-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Checked States */
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.selected .option-circle {
+            border-color: var(--primary);
+        }
+
+        .option-card.selected .option-circle::after {
+            transform: scale(1);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--background);
+            transition: var(--transition);
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            background-color: var(--surface);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-input.input-error, .form-select.input-error {
+            border-color: var(--error);
+            background-color: #fef2f2;
+        }
+
+        /* Navigation Buttons inside Quiz */
+        .quiz-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        /* Summary & Offer Section */
+        .summary-container {
+            display: none; /* Controlled by JS */
+            padding: 32px 20px;
+            background-color: var(--surface);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .summary-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .summary-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.3;
+        }
+
+        .summary-box {
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .summary-box h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-box h3 svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+
+        .summary-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .summary-item svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--secondary);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        /* Paywall Section */
+        .paywall-card {
+            border: 2px solid var(--secondary);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            background-color: var(--secondary-light);
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .paywall-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-bottom-left-radius: var(--radius-sm);
+        }
+
+        .paywall-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--secondary-hover);
+            margin-bottom: 8px;
+            margin-top: 4px;
+        }
+
+        .paywall-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .paywall-features {
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: white;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .feature-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .price-tag {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .price-tag span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* Free Guidance Section */
+        .free-guidance-box {
+            display: none;
+            background-color: var(--primary-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 16px;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .free-guidance-box h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .free-guidance-box p {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* Interactive Payment Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            animation: slideUp 0.3s ease-in-out forwards;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+        }
+
+        .modal-close svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .payment-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-tab.active {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .payment-body {
+            margin-bottom: 20px;
+        }
+
+        .payment-panel {
+            display: none;
+        }
+
+        .payment-panel.active {
+            display: block;
+        }
+
+        /* Pix Panel */
+        .pix-qr {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 16px;
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        .pix-qr svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pix-code-box {
+            display: flex;
+            background-color: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .pix-code-text {
+            font-size: 0.75rem;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            color: var(--text-muted);
+        }
+
+        .pix-copy-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* Countdown timer */
+        .payment-timer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        /* Credit Card inputs */
+        .card-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Simulation Success View */
+        .unlocked-report-container {
+            display: none; /* Controlled by JS after successful payment simulation */
+            padding: 32px 20px;
+            background-color: var(--surface);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .unlocked-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--secondary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .report-section {
+            margin-bottom: 24px;
+            background-color: var(--background);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .report-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .report-section-title svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .report-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .report-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .report-list-item svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--secondary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 32px 20px;
+            border-top: 1px solid var(--border);
+            background-color: var(--surface);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 16px;
+            text-align: left;
+            background-color: var(--surface);
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            background-color: var(--background);
+            transition: max-height 0.25s ease-out, padding 0.25s ease;
+            padding: 0 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .faq-item.active {
+            border-color: var(--primary);
+        }
+
+        .faq-item.active .faq-question {
+            color: var(--primary);
+        }
+
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+            fill: var(--primary);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 150px;
+            padding: 0 16px 16px 16px;
+        }
+
+        /* Privacy & Transparency Notice */
+        .privacy-section {
+            padding: 24px 20px;
+            background-color: var(--background);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .privacy-box {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .privacy-box strong {
+            color: var(--text-main);
+        }
+
+        /* Footer Disclaimer */
+        .app-footer {
+            padding: 24px 20px 32px;
+            background-color: #0f172a; /* Slate 900 */
+            color: #94a3b8; /* Slate 400 */
+            font-size: 0.75rem;
+            line-height: 1.6;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-disclaimer {
+            padding: 12px;
+            border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: var(--radius-sm);
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* Keyframes Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Utility classes */
+        .d-none { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .w-full { width: 100%; }
+
+        /* Spinner */
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+            <span>Análise Informativa</span>
+        </div>
+        <div class="security-badge">
+            <svg viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </svg>
+            <span>Seguro</span>
+        </div>
+    </header>
+
+    <div class="app-content">
+
+        <!-- LANDING PAGE VIEW -->
+        <div id="landingView">
+            
+            <!-- HERO SECTION -->
+            <section class="hero-section">
+                <h1 class="hero-title">Descubra se você pode ter direito a benefícios do INSS</h1>
+                
+                <div class="rating-badge" style="display: inline-flex; align-items: center; gap: 6px; background-color: #fef08a; color: #854d0e; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin: 4px auto 12px;">
+                    <span>★ ★ ★ ★ ★</span>
+                    <span>4.9/5 (15k+ análises)</span>
+                </div>
+
+                <p class="hero-subtitle" style="margin-top: 8px;">Responda algumas perguntas e receba uma análise informativa personalizada com orientações do que verificar.</p>
+                
+                <!-- Barra de Confiança -->
+                <div class="confidence-bar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 0 auto 24px; max-width: 400px; text-align: left; padding: 12px; background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; color: var(--text-main);">
+                    <div style="display: flex; align-items: center; gap: 6px;">✅ Ferramenta Informativa</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">✅ Sem consulta ao INSS</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">✅ Sem compromisso</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">✅ Resultado imediato</div>
+                </div>
+
+                <button class="btn btn-primary" onclick="startQuiz()">
+                    Iniciar Triagem Gratuita Já
+                    <svg width="18" height="18" fill="white" viewBox="0 0 24 24" style="margin-left: 4px;">
+                        <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/>
+                    </svg>
+                </button>
+
+                <!-- TRUST BULLETS -->
+                <div class="trust-block">
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm3.3 14.79L11 12.9V7h1.5v5.1l3.7 2.2-.71 1.29z"/></svg>
+                        <span>Rápido</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>Informativo</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 15l-4-4 1.41-1.41L10 13.17l7.59-7.59L19 7l-9 9z"/></svg>
+                        <span>Seguro</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HOW IT WORKS SECTION -->
+            <section class="steps-section">
+                <h2 class="section-title">Como funciona?</h2>
+                <div class="steps-list">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-info">
+                            <h4>Responda perguntas</h4>
+                            <p>Preencha os dados básicos sobre sua faixa etária, saúde e histórico de trabalho.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-info">
+                            <h4>Veja um resumo inicial</h4>
+                            <p>Entenda quais são as principais categorias de benefícios que correspondem à sua situação.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-info">
+                            <h4>Receba o relatório informativo</h4>
+                            <p>Acesse o passo a passo completo, checklist de documentos e tire suas dúvidas por uma pequena taxa.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIALS SECTION -->
+            <section class="testimonials-section" style="padding: 32px 20px; border-top: 1px solid var(--border); background-color: var(--background);">
+                <h2 class="section-title">O que dizem os usuários:</h2>
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="background-color: var(--surface); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); text-align: left;">
+                        <p style="font-size: 0.85rem; font-style: italic; color: var(--text-main); margin-bottom: 8px;">"O checklist de documentos me poupou muito tempo. Fui à agência sabendo exatamente o que levar e evitei viagem perdida."</p>
+                        <strong style="font-size: 0.8rem; color: var(--primary);">— Carlos A., 61 anos, São Paulo (SP)</strong>
+                    </div>
+                    <div style="background-color: var(--surface); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); text-align: left;">
+                        <p style="font-size: 0.85rem; font-style: italic; color: var(--text-main); margin-bottom: 8px;">"Explicação clara e objetiva sobre o BPC/LOAS. Tirou todas as minhas dúvidas antes de eu dar entrada no portal oficial."</p>
+                        <strong style="font-size: 0.8rem; color: var(--primary);">— Regina M., 66 anos, Rio de Janeiro (RJ)</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ SECTION -->
+            <section class="faq-section">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Isso é o INSS?
+                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            Não. Somos um serviço informativo independente e privado. Não temos qualquer vínculo com o INSS, ministérios ou qualquer órgão governamental.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Vocês garantem benefício?
+                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            Não garantimos concessão. A decisão final sobre a elegibilidade e liberação de qualquer benefício previdenciário é de competência exclusiva e oficial do INSS.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Preciso enviar documentos?
+                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            Não nesta etapa. Nós não solicitamos, coletamos ou armazenamos cópias de seus documentos pessoais em nosso site.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Como funciona o pagamento?
+                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            O pagamento de R$ 4,99 é uma taxa única opcional cobrada pela compilação, formatação e entrega do relatório informativo digital detalhado com checklists personalizados.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRIVACY SECTION -->
+            <section class="privacy-section">
+                <div class="privacy-box">
+                    <strong>Privacidade e Transparência:</strong> Seus dados de contato fornecidos são tratados com segurança e serão utilizados exclusivamente para gerar a sua análise informativa e para futuros contatos informativos de orientação sobre seu caso.
+                </div>
+            </section>
+        </div>
+
+
+        <!-- QUIZ CONTAINER VIEW -->
+        <div id="quizView" class="quiz-container">
+            
+            <!-- PROGRESS BAR -->
+            <div class="progress-wrapper">
+                <div class="progress-header">
+                    <span id="backBtnQuiz" onclick="prevStep()" style="cursor:pointer; display:flex; align-items:center; gap:4px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                        Voltar
+                    </span>
+                    <span id="stepIndicator">Pergunta 1 de 8</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <form id="quizForm" onsubmit="handleQuizSubmit(event)">
+                
+                <!-- STEP 1: IDADE -->
+                <div class="quiz-step active" data-step="1">
+                    <h2 class="question-title">Qual é a sua faixa etária?</h2>
+                    <p class="question-subtitle">A idade determina regras específicas de elegibilidade no sistema de previdência.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="idade" value="Menos de 18 anos" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Menos de 18 anos</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="idade" value="18 a 59 anos" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">18 a 59 anos</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="idade" value="60 a 64 anos" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">60 a 64 anos</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="idade" value="65 anos ou mais" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">65 anos ou mais</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 2: TRABALHO -->
+                <div class="quiz-step" data-step="2">
+                    <h2 class="question-title">Qual é a sua situação atual de trabalho?</h2>
+                    <p class="question-subtitle">A forma como você contribui influi nos tipos de direitos informados.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="trabalho" value="Empregado" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Empregado (com carteira assinada)</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="trabalho" value="Autônomo" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Autônomo / Contribuinte Individual</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="trabalho" value="Desempregado" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Desempregado</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="trabalho" value="Aposentado" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Aposentado / Pensionista</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 3: AFASTADO SAÚDE -->
+                <div class="quiz-step" data-step="3">
+                    <h2 class="question-title">Você está afastado do trabalho por motivo de saúde?</h2>
+                    <p class="question-subtitle">Responda honestamente para identificarmos informativos sobre auxílio por incapacidade.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="afastado" value="Sim" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Sim, estou afastado</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="afastado" value="Não" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Não estou afastado</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 4: LIMITAÇÃO SAÚDE -->
+                <div class="quiz-step" data-step="4">
+                    <h2 class="question-title">Tem alguma condição de saúde que limita o trabalho?</h2>
+                    <p class="question-subtitle">Isso ajuda na triagem informativa de direitos voltados à saúde e deficiência.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="limitacao" value="Sim" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Sim, possuo limitações</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="limitacao" value="Não" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Não possuo limitações</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 5: RENDA -->
+                <div class="quiz-step" data-step="5">
+                    <h2 class="question-title">Qual é a renda familiar aproximada?</h2>
+                    <p class="question-subtitle">Soma total do rendimento das pessoas que vivem na mesma residência.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="renda" value="Até 1 salário mínimo" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Até 1 salário mínimo (R$ 1.412)</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="renda" value="Entre 1 e 3 salários mínimos" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Entre 1 e 3 salários mínimos (R$ 1.412 a R$ 4.236)</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="renda" value="Mais de 3 salários mínimos" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Mais de 3 salários mínimos (Acima de R$ 4.236)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 6: PESSOAS EM CASA -->
+                <div class="quiz-step" data-step="6">
+                    <h2 class="question-title">Quantas pessoas moram na sua casa?</h2>
+                    <p class="question-subtitle">Considerando você e os demais residentes.</p>
+                    <div class="options-list">
+                        <label class="option-card">
+                            <input type="radio" name="pessoas" value="1 pessoa" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">Moro sozinho(a) (1 pessoa)</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="pessoas" value="2 pessoas" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">2 pessoas</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="pessoas" value="3 pessoas" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">3 pessoas</span>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="pessoas" value="4 ou mais pessoas" required onclick="selectOption(this)">
+                            <span class="option-circle"></span>
+                            <span class="option-label">4 ou mais pessoas</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 7: LOCALIZAÇÃO -->
+                <div class="quiz-step" data-step="7">
+                    <h2 class="question-title">Onde você reside atualmente?</h2>
+                    <p class="question-subtitle">Preencha sua localização básica para filtros regionais simples se aplicável.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="estado">Estado</label>
+                        <select id="estado" name="estado" class="form-select" required onchange="validateField(this)">
+                            <option value="">Selecione seu Estado</option>
+                            <option value="AC">Acre (AC)</option>
+                            <option value="AL">Alagoas (AL)</option>
+                            <option value="AP">Amapá (AP)</option>
+                            <option value="AM">Amazonas (AM)</option>
+                            <option value="BA">Bahia (BA)</option>
+                            <option value="CE">Ceará (CE)</option>
+                            <option value="DF">Distrito Federal (DF)</option>
+                            <option value="ES">Espírito Santo (ES)</option>
+                            <option value="GO">Goiás (GO)</option>
+                            <option value="MA">Maranhão (MA)</option>
+                            <option value="MT">Mato Grosso (MT)</option>
+                            <option value="MS">Mato Grosso do Sul (MS)</option>
+                            <option value="MG">Minas Gerais (MG)</option>
+                            <option value="PA">Pará (PA)</option>
+                            <option value="PB">Paraíba (PB)</option>
+                            <option value="PR">Paraná (PR)</option>
+                            <option value="PE">Pernambuco (PE)</option>
+                            <option value="PI">Piauí (PI)</option>
+                            <option value="RJ">Rio de Janeiro (RJ)</option>
+                            <option value="RN">Rio Grande do Norte (RN)</option>
+                            <option value="RS">Rio Grande do Sul (RS)</option>
+                            <option value="RO">Rondônia (RO)</option>
+                            <option value="RR">Roraima (RR)</option>
+                            <option value="SC">Santa Catarina (SC)</option>
+                            <option value="SP">São Paulo (SP)</option>
+                            <option value="SE">Sergipe (SE)</option>
+                            <option value="TO">Tocantins (TO)</option>
+                        </select>
+                        <div class="error-message" id="error-estado">Selecione o estado para continuar.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" class="form-input" placeholder="Digite sua cidade" required oninput="validateField(this)">
+                        <div class="error-message" id="error-cidade">Digite o nome da sua cidade.</div>
+                    </div>
+                </div>
+
+                <!-- STEP 8: CONTATO -->
+                <div class="quiz-step" data-step="8">
+                    <h2 class="question-title">Identificação e Contato</h2>
+                    <p class="question-subtitle">Forneça as informações onde enviaremos o relatório detalhado.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome completo" required oninput="validateField(this)">
+                        <div class="error-message" id="error-nome">Insira o seu nome completo.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="seuemail@provedor.com" required oninput="validateField(this)">
+                        <div class="error-message" id="error-email">Insira um e-mail válido.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="whatsapp">WhatsApp / Celular</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" class="form-input" placeholder="(00) 00000-0000" required oninput="maskWhatsapp(event); validateField(this);">
+                        <div class="error-message" id="error-whatsapp">Insira o número completo com DDD (ex: 11 99999-9999).</div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS BUTTONS -->
+                <div class="quiz-nav">
+                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextStep()">
+                        Continuar
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary d-none">
+                        Finalizar e Gerar Resumo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- SUMMARY & RESULT VIEW -->
+        <div id="summaryView" class="summary-container">
+            <div class="summary-header">
+                <div class="summary-badge">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    Resumo Gerado com Sucesso
+                </div>
+                <h2 class="summary-title">Com base nas suas respostas, estes são temas que você pode verificar:</h2>
+            </div>
+
+            <!-- DYNAMIC SUGGESTIONS BOX -->
+            <div class="summary-box">
+                <h3 id="profileSummaryTitle">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Tópicos indicados para acompanhamento:
+                </h3>
+                <ul class="summary-list" id="summaryList">
+                    <!-- Loaded dynamically via JS -->
+                </ul>
+            </div>
+
+            <!-- PAYWALL CARD -->
+            <div class="paywall-card">
+                <div class="paywall-badge">Recomendado</div>
+                
+                <!-- Oferta de Urgência -->
+                <div style="background-color: #fee2e2; color: #991b1b; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; margin-bottom: 14px; text-align: center; border: 1px solid #fecaca; display: inline-flex; align-items: center; gap: 6px; width: 100%; justify-content: center; margin-top: 8px;">
+                    <span>⏱️</span>
+                    <span>OFERTA TEMPORÁRIA: De R$ 19,90 por apenas R$ 4,99!</span>
+                </div>
+
+                <h3 class="paywall-title">Deseja acelerar sua consulta com o Guia Informativo Completo?</h3>
+                <p class="paywall-subtitle">Evite erros na hora de consultar seus direitos nos órgãos oficiais.</p>
+                
+                <div class="paywall-features">
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>Checklist de documentos essenciais</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>Passos para consulta nos canais oficiais</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>Perguntas e dúvidas comuns respondidas</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>Próximos passos organizados de forma simples</span>
+                    </div>
+                    <div class="feature-item" style="border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 6px; color: var(--secondary-hover); font-weight: 700; display: flex; align-items: center;">
+                        <span style="font-size: 1.1rem; margin-right: 6px; flex-shrink: 0;">🎁</span>
+                        <span>BÔNUS: Mini-guia de como evitar os 5 maiores erros no INSS</span>
+                    </div>
+                </div>
+
+                <div class="price-tag" style="margin-bottom: 8px;">
+                    R$ 4,99 <span style="font-size:0.8rem; display:block; font-weight:normal; margin-top:2px;">(taxa única pelo relatório digital)</span>
+                </div>
+
+                <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px; font-weight: 500; text-align: center;">
+                    <div style="margin-bottom: 4px;">👥 Mais de 15.000 pessoas já utilizaram este material informativo.</div>
+                    <div>⚡ Relatório digital entregue imediatamente após a confirmação.</div>
+                </div>
+
+                <button class="btn btn-primary" onclick="openPaymentModal()">
+                    Obter Guia Informativo Agora por R$ 4,99
+                    <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                </button>
+
+
+            </div>
+        </div>
+
+
+        <!-- UNLOCKED PAID REPORT VIEW -->
+        <div id="unlockedReportView" class="unlocked-report-container">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <svg width="48" height="48" fill="var(--secondary)" viewBox="0 0 24 24" style="margin: 0 auto 12px; display:block;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <h2 class="unlocked-title" style="margin-bottom:4px;">Relatório Informativo Liberado!</h2>
+                <p style="font-size:0.85rem; color:var(--text-muted);">Confira abaixo o material personalizado com base no seu perfil.</p>
+            </div>
+
+            <!-- SECTION 1: DOCUMENTOS -->
+            <div class="report-section">
+                <h3 class="report-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    1. Checklist de Documentos Recomendados
+                </h3>
+                <ul class="report-list" id="unlockedDocsList">
+                    <!-- Dynamic -->
+                </ul>
+            </div>
+
+            <!-- SECTION 2: COMO CONSULTAR -->
+            <div class="report-section">
+                <h3 class="report-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    2. Passo a Passo para Consulta Oficial
+                </h3>
+                <ul class="report-list">
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            <strong>Crie ou acesse sua conta Gov.br:</strong> 
+                            Acesse o site <a href="https://acesso.gov.br" target="_blank" style="color:var(--primary); font-weight:600;">acesso.gov.br</a>. Tenha em mãos seu CPF e senha. O nível da conta (Bronze, Prata ou Ouro) pode ser exigido para alguns serviços.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            <strong>Consulte o CNIS:</strong> 
+                            Dentro do portal "Meu INSS", procure por "Extrato de Contribuição (CNIS)". Esse documento contém todo o seu histórico oficial de contribuições e salários.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            <strong>Simule a Aposentadoria:</strong> 
+                            Use a ferramenta de simulação automática presente no Meu INSS para ver o cálculo do tempo atualizado com base nos dados do sistema governamental.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            <strong>Solicitação de atendimento/perícia:</strong> 
+                            Para casos de afastamento por saúde, a solicitação e o envio do laudo médico inicial podem ser efetuados na aba "Pedir Benefício por Incapacidade".
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SECTION 3: PERGUNTAS COMUNS -->
+            <div class="report-section">
+                <h3 class="report-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    3. Respostas para Dúvidas Comuns
+                </h3>
+                <ul class="report-list">
+                    <li class="report-list-item">
+                        <div>
+                            <strong>Qual é o tempo de carência exigido?</strong>
+                            Para a maioria dos benefícios por incapacidade temporária (auxílio-doença), exige-se no mínimo 12 meses de contribuição, salvo acidentes de trabalho ou doenças graves previstas em lei.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <div>
+                            <strong>Como funciona o BPC/LOAS?</strong>
+                            É um benefício de um salário mínimo mensal para idosos com 65 anos ou mais, ou pessoas com deficiência física/mental de qualquer idade, desde que a renda por pessoa do grupo familiar seja inferior a 1/4 do salário mínimo atual. Requer inscrição ativa no Cadastro Único (CadÚnico).
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <div>
+                            <strong>Qual é o prazo médio de resposta do INSS?</strong>
+                            O prazo legal varia de 45 a 90 dias úteis, a depender da modalidade de análise exigida (médica, administrativa ou social).
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SECTION 4: PRÓXIMOS PASSOS -->
+            <div class="report-section">
+                <h3 class="report-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M19 15l-6 6-1.42-1.42L15.17 16H4v-2h11.17l-3.59-3.58L13 9l6 6zm-9-9h10v2H10V6zm0 4h10v2H10v-2z"/></svg>
+                    4. Seus Próximos Passos
+                </h3>
+                <ul class="report-list">
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            Organize os documentos listados em formato PDF ou foto nítida.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            Acesse a plataforma Meu INSS ou ligue 135 para solicitar orientações finais específicas do seu caso.
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <div>
+                            Acompanhe o andamento das solicitações no painel oficial do governo de forma rotineira.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn btn-secondary text-center mt-20" onclick="resetToHome()">
+                Voltar ao início
+            </button>
+        </div>
+
+        <!-- PAYMENT SUCCESS / PENDING REVIEW VIEW -->
+        <div id="paymentSuccessView" class="unlocked-report-container" style="display: none;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div style="width: 72px; height: 72px; background-color: var(--secondary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <svg width="40" height="40" fill="var(--secondary)" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h2 class="unlocked-title" style="color: var(--secondary-hover); font-size: 1.5rem; margin-bottom: 8px;">Pagamento Recebido!</h2>
+                <p style="font-size: 0.95rem; color: var(--text-main); font-weight: 600; line-height: 1.4; padding: 0 10px;">
+                    Confirmamos o recebimento da taxa de geração do relatório informativo.
+                </p>
+            </div>
+
+            <div class="report-section" style="border: 2px solid var(--secondary); background-color: var(--secondary-light); text-align: left;">
+                <h3 class="report-section-title" style="color: var(--secondary-hover); font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Revisão e Envio por E-mail
+                </h3>
+                <p style="font-size: 0.85rem; color: var(--text-main); line-height: 1.5; margin-bottom: 12px;">
+                    Nossa equipe já está analisando suas respostas para compilar o material adequado ao seu perfil.
+                </p>
+                <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5; font-weight: 700;">
+                    Estamos revisando o relatório informativo personalizado e ele será enviado para o seu e-mail cadastrado em até 24 horas:
+                </p>
+                <div style="background-color: white; border: 1px solid var(--border); padding: 12px; border-radius: var(--radius-sm); margin-top: 10px; font-weight: 700; font-size: 1rem; color: var(--primary); text-align: center; word-break: break-all;" id="successTargetEmail">
+                    seuemail@provedor.com
+                </div>
+            </div>
+
+            <!-- Dados Confirmados -->
+            <div class="report-section" style="text-align: left;">
+                <h3 class="report-section-title" style="display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Dados de Contato Cadastrados
+                </h3>
+                <ul class="report-list">
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--secondary);"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <div style="font-size: 0.85rem;">
+                            <strong>Nome:</strong> <span id="successTargetNome">João Silva</span>
+                        </div>
+                    </li>
+                    <li class="report-list-item">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: var(--secondary);"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        <div style="font-size: 0.85rem;">
+                            <strong>WhatsApp:</strong> <span id="successTargetWhatsapp">(11) 99999-9999</span>
+                        </div>
+                    </li>
+                </ul>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; line-height: 1.4;">
+                    *Se identificar algum erro nos dados informados, entre em contato imediatamente com o suporte oficial.
+                </p>
+            </div>
+
+            <div class="report-section" style="text-align: left;">
+                <h3 class="report-section-title" style="display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    Dica Importante
+                </h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                    Verifique sua pasta de <strong>Spam</strong> ou <strong>Lixo Eletrônico</strong> caso não localize o e-mail em sua caixa de entrada principal.
+                </p>
+            </div>
+
+            <button class="btn btn-secondary text-center mt-20" onclick="resetToHome()">
+                Voltar ao início
+            </button>
+        </div>
+
+    </div>
+
+    <!-- INTERACTIVE PAYMENT MODAL -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closePaymentModal()">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+            <h3 class="modal-title">Pagamento via Pix</h3>
+
+            <div class="payment-body">
+                
+                <!-- PIX PANEL -->
+                <div id="panelPix" class="payment-panel active">
+                    <div class="payment-value-display" style="text-align: center; margin-bottom: 16px; background-color: var(--primary-light); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Valor da Taxa</span>
+                        <strong style="font-size: 1.5rem; color: var(--primary); font-weight: 800;">R$ 4,99</strong>
+                    </div>
+                    <div class="pix-qr" id="pixQrContainer" style="width: 150px; height: 150px; margin: 0 auto 16px; background-color: var(--background); border: 1px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; padding: 8px;">
+                        <img id="pixQrImg" src="" alt="QR Code PIX" style="width:100%; height:100%; object-fit:contain; display:none;">
+                        <div id="pixQrLoading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:8px;">
+                            <div class="spinner"></div>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Gerando PIX...</span>
+                        </div>
+                    </div>
+                    <div class="pix-code-box">
+                        <span class="pix-code-text" id="pixCode">Gerando...</span>
+                        <button class="pix-copy-btn" onclick="copyPixCode()">Copiar</button>
+                    </div>
+                    <p id="pixFeedback" class="text-center" style="font-size:0.75rem; color:var(--success); font-weight:bold; margin-bottom:8px; display:none;">Código copiado!</p>
+                </div>
+
+                <div class="payment-timer">
+                    Aguardando confirmação do pagamento... <strong id="countdown">09:59</strong>
+                </div>
+
+                <button class="btn btn-primary w-full" style="margin-bottom: 12px;" onclick="copyPixCode()">
+                    Copiar código Pix
+                    <svg width="18" height="18" fill="white" viewBox="0 0 24 24" style="margin-left: 4px;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                </button>
+
+                <button class="btn btn-secondary w-full" onclick="simulatePaymentApproval()">
+                    Confirmar Pagamento (Simulação)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN VIEW -->
+    <div id="adminLoginView" class="unlocked-report-container" style="display: none; padding: 32px 20px;">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <h2 class="unlocked-title" style="color: var(--primary);">Painel do Administrador</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Digite a senha para ver os dados de conversão.</p>
+        </div>
+        <div class="report-section" style="text-align: left;">
+            <div class="form-group">
+                <label class="form-label" for="adminPassword">Senha de Acesso</label>
+                <input type="password" id="adminPassword" class="form-input" placeholder="Digite a senha" onkeyup="if(event.key === 'Enter') handleAdminLogin()" oninput="document.getElementById('adminLoginError').style.display = 'none'">
+                <div class="error-message" id="adminLoginError" style="margin-top: 8px;">Senha incorreta. Tente novamente.</div>
+            </div>
+            <button class="btn btn-primary w-full" style="margin-top: 8px;" onclick="handleAdminLogin()">Acessar Painel</button>
+        </div>
+        <button class="btn btn-secondary text-center mt-20" onclick="window.location.hash = '#/'">
+            Voltar ao site
+        </button>
+    </div>
+
+    <!-- ADMIN DASHBOARD VIEW -->
+    <div id="adminDashboardView" class="unlocked-report-container" style="display: none; padding: 32px 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 class="unlocked-title" style="color: var(--primary); margin-bottom: 4px;">Painel de Métricas</h2>
+            <span class="security-badge" style="background-color: var(--secondary-light); color: var(--secondary); font-size: 0.7rem; font-weight: 700; display: inline-block;">Acesso Autorizado</span>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+            <div style="background-color: var(--background); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); text-align: center;">
+                <span style="font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px;">Cliques no Hero</span>
+                <strong style="font-size: 1.4rem; color: var(--primary);" id="kpiHeroClicks">0</strong>
+            </div>
+            <div style="background-color: var(--background); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); text-align: center;">
+                <span style="font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px;">Quiz Iniciado</span>
+                <strong style="font-size: 1.4rem; color: var(--primary);" id="kpiQuizStarts">0</strong>
+            </div>
+            <div style="background-color: var(--background); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); text-align: center;">
+                <span style="font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px;">Quiz Concluído</span>
+                <strong style="font-size: 1.4rem; color: var(--primary);" id="kpiQuizCompletions">0</strong>
+            </div>
+            <div style="background-color: var(--background); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); text-align: center;">
+                <span style="font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; margin-bottom: 4px;">Pix Gerados</span>
+                <strong style="font-size: 1.4rem; color: var(--secondary);" id="kpiPixGenerations">0</strong>
+            </div>
+        </div>
+
+        <!-- Conversion Rates -->
+        <div style="background-color: var(--primary-light); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 20px; text-align: left; font-size: 0.8rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600;">
+                <span>Conversão do Quiz (Início → Fim):</span>
+                <span id="rateQuiz">0%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                <span>Conversão do Pix (Fim → Pix):</span>
+                <span id="ratePix" style="color: var(--secondary);">0%</span>
+            </div>
+        </div>
+
+        <!-- Clicks Table -->
+        <div class="report-section" style="padding: 12px; text-align: left; background-color: var(--surface); border: 1px solid var(--border);">
+            <h3 class="report-section-title" style="font-size: 0.9rem; margin-bottom: 10px;">Detalhamento de Cliques (Ações)</h3>
+            <div style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
+                    <thead>
+                        <tr style="background-color: var(--background); border-bottom: 1px solid var(--border); text-align: left; font-weight: 700;">
+                            <th style="padding: 8px;">Ação / Local</th>
+                            <th style="padding: 8px; text-align: center; width: 60px;">Qtd</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clicksTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Firebase note -->
+        <div style="background-color: #fffbeb; border: 1px solid #fef3c7; color: #b45309; padding: 10px; border-radius: var(--radius-sm); font-size: 0.7rem; margin-bottom: 20px; text-align: left; line-height: 1.4;">
+            💡 <strong>Produção (Firebase):</strong> Para visualizar cliques globais em produção, integre com o Firebase Firestore salvando as métricas em uma coleção coletiva.
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary text-center w-full" style="padding: 12px; font-size: 0.85rem;" onclick="resetAdminStats()">Zerar Dados</button>
+            <button class="btn btn-primary text-center w-full" style="padding: 12px; font-size: 0.85rem;" onclick="handleAdminLogout()">Sair</button>
+        </div>
+    </div>
+
+    <!-- FOOTER DISCLAIMER -->
+    <footer class="app-footer">
+        <div class="footer-disclaimer">
+            <strong>Disclaimer Informativo Importante:</strong> Este portal é um canal de triagem e orientação independente. Não fazemos parte do INSS, órgãos previdenciários oficiais ou do Governo Federal. Nós não garantimos o deferimento ou concessão de benefícios. Todo o material fornecido possui caráter puramente educativo e de orientação preliminar, não substituindo o atendimento oficial ou consultas jurídicas formais.
+        </div>
+        <p style="margin-top: 16px; font-size: 0.7rem; color: #64748b;">
+            © 2026 Triagem Previdenciária Independente. Todos os direitos reservados.
+        </p>
+    </footer>
+
+</div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<!-- APP LOGIC (JAVASCRIPT) -->
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyChMyCeVJByUmODUZmpLpz9MGhs0YJUbOY",
+        authDomain: "triagem-inss.firebaseapp.com",
+        projectId: "triagem-inss",
+        storageBucket: "triagem-inss.firebasestorage.app",
+        messagingSenderId: "914343281039",
+        appId: "1:914343281039:web:4c267f5c3a194bb9ab8bfa"
+    };
+
+    let db = null;
+    let isFirebaseConfigured = false;
+
+    // Check if configuration has been replaced with real credentials
+    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "SUA_API_KEY") {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            isFirebaseConfigured = true;
+            console.log("Firebase Firestore inicializado com sucesso.");
+        } catch (e) {
+            console.error("Falha ao inicializar o Firebase:", e);
+        }
+    } else {
+        console.log("Firebase não configurado. Utilizando LocalStorage para métricas locais.");
+    }
+
+    // Generate or get unique session ID
+    let sessionId = sessionStorage.getItem('inss_session_id');
+    if (!sessionId) {
+        sessionId = 'sess_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+        sessionStorage.setItem('inss_session_id', sessionId);
+    }
+
+    // Tracking System (Metrics)
+    const tracking = {
+        init() {
+            if (!localStorage.getItem('inss_stats')) {
+                localStorage.setItem('inss_stats', JSON.stringify({
+                    hero_clicks: 0,
+                    quiz_starts: 0,
+                    quiz_completions: 0,
+                    pix_generations: 0,
+                    clicks: {}
+                }));
+            }
+        },
+        getStats() {
+            this.init();
+            return JSON.parse(localStorage.getItem('inss_stats'));
+        },
+        saveStats(stats) {
+            localStorage.setItem('inss_stats', JSON.stringify(stats));
+        },
+        track(event, detail = '') {
+            this.init();
+            
+            // 1. Local tracking fallback
+            const stats = this.getStats();
+            if (event === 'hero_click') stats.hero_clicks++;
+            if (event === 'quiz_start') stats.quiz_starts++;
+            if (event === 'quiz_complete') stats.quiz_completions++;
+            if (event === 'pix_generate') stats.pix_generations++;
+            
+            const clickKey = detail ? `${event}: ${detail}` : event;
+            stats.clicks[clickKey] = (stats.clicks[clickKey] || 0) + 1;
+            this.saveStats(stats);
+
+            // 2. Firebase global tracking
+            if (isFirebaseConfigured && db) {
+                try {
+                    const docRef = db.collection('inss_sessions').doc(sessionId);
+                    const updateData = {
+                        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    if (event === 'hero_click') updateData.hero_clicks = firebase.firestore.FieldValue.increment(1);
+                    if (event === 'quiz_start') updateData.quiz_starts = firebase.firestore.FieldValue.increment(1);
+                    if (event === 'quiz_complete') updateData.quiz_completions = firebase.firestore.FieldValue.increment(1);
+                    if (event === 'pix_generate') updateData.pix_generations = firebase.firestore.FieldValue.increment(1);
+                    
+                    const safeClickKey = clickKey.replace(/\./g, '_');
+                    updateData[`clicks.${safeClickKey}`] = firebase.firestore.FieldValue.increment(1);
+
+                    docRef.set(updateData, { merge: true }).catch(err => {
+                        console.warn("Erro ao salvar no Firestore:", err);
+                    });
+                } catch (err) {
+                    console.warn("Erro no tracking do Firebase:", err);
+                }
+            }
+        }
+    };
+
+    // Route Checker
+    function checkRoute() {
+        const hash = window.location.hash;
+        if (hash === '#/adm') {
+            // Hide all other views
+            document.getElementById('landingView').classList.add('d-none');
+            document.getElementById('quizView').style.display = 'none';
+            document.getElementById('summaryView').style.display = 'none';
+            document.getElementById('paymentSuccessView').style.display = 'none';
+            document.getElementById('unlockedReportView').style.display = 'none';
+            
+            // Check if admin is logged in (sessionStorage)
+            if (sessionStorage.getItem('admin_logged') === 'true') {
+                showAdminDashboard();
+            } else {
+                showAdminLogin();
+            }
+        } else {
+            // Hide admin views
+            document.getElementById('adminLoginView').style.display = 'none';
+            document.getElementById('adminDashboardView').style.display = 'none';
+            
+            // Show landing page by default if not in quiz/summary
+            if (document.getElementById('quizView').style.display !== 'flex' &&
+                document.getElementById('summaryView').style.display !== 'block' &&
+                document.getElementById('paymentSuccessView').style.display !== 'block') {
+                document.getElementById('landingView').classList.remove('d-none');
+            }
+        }
+    }
+
+    // Admin login / logout logic
+    function handleAdminLogin() {
+        const pass = document.getElementById('adminPassword').value;
+        const errorEl = document.getElementById('adminLoginError');
+        if (pass === 'Ae@1234Br') {
+            sessionStorage.setItem('admin_logged', 'true');
+            errorEl.style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            showAdminDashboard();
+        } else {
+            errorEl.style.display = 'block';
+        }
+    }
+
+    function handleAdminLogout() {
+        sessionStorage.removeItem('admin_logged');
+        document.getElementById('adminDashboardView').style.display = 'none';
+        window.location.hash = '#/';
+    }
+
+    function showAdminLogin() {
+        document.getElementById('adminLoginView').style.display = 'block';
+        document.getElementById('adminDashboardView').style.display = 'none';
+    }
+
+    function showAdminDashboard() {
+        document.getElementById('adminLoginView').style.display = 'none';
+        document.getElementById('adminDashboardView').style.display = 'block';
+        
+        // Show loading state if loading from database
+        const kpis = ['kpiHeroClicks', 'kpiQuizStarts', 'kpiQuizCompletions', 'kpiPixGenerations', 'rateQuiz', 'ratePix'];
+        kpis.forEach(id => {
+            document.getElementById(id).style.opacity = '0.5';
+        });
+        
+        const tbody = document.getElementById('clicksTableBody');
+        tbody.innerHTML = `<tr><td colspan="2" style="padding: 12px; text-align: center; color: var(--text-muted);">Carregando métricas...</td></tr>`;
+
+        function renderStats(statsSource, isGlobal) {
+            // Restore opacity
+            kpis.forEach(id => {
+                document.getElementById(id).style.opacity = '1';
+            });
+            
+            // Populate KPIs
+            document.getElementById('kpiHeroClicks').innerText = statsSource.hero_clicks;
+            document.getElementById('kpiQuizStarts').innerText = statsSource.quiz_starts;
+            document.getElementById('kpiQuizCompletions').innerText = statsSource.quiz_completions;
+            document.getElementById('kpiPixGenerations').innerText = statsSource.pix_generations;
+            
+            // Calculations
+            const quizRate = statsSource.quiz_starts > 0 ? Math.round((statsSource.quiz_completions / statsSource.quiz_starts) * 100) : 0;
+            const pixRate = statsSource.quiz_completions > 0 ? Math.round((statsSource.pix_generations / statsSource.quiz_completions) * 100) : 0;
+            
+            document.getElementById('rateQuiz').innerText = `${quizRate}%`;
+            document.getElementById('ratePix').innerText = `${pixRate}%`;
+            
+            // Populate Clicks Table
+            tbody.innerHTML = '';
+            const sortedClicks = Object.entries(statsSource.clicks).sort((a, b) => b[1] - a[1]);
+            
+            if (sortedClicks.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="padding: 12px; text-align: center; color: var(--text-muted);">Nenhum clique registrado ainda.</td></tr>`;
+            } else {
+                sortedClicks.forEach(([key, count]) => {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid var(--border)';
+                    tr.innerHTML = `
+                        <td style="padding: 8px; text-align: left; word-break: break-all;">${key}</td>
+                        <td style="padding: 8px; text-align: center; font-weight: bold;">${count}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Adjust banner text
+            const noteEl = document.querySelector('#adminDashboardView div[style*="fffbeb"]');
+            if (noteEl) {
+                if (isGlobal) {
+                    noteEl.innerHTML = `🟢 <strong>Produção (Firebase):</strong> Exibindo dados de acessos globais salvos em tempo real no Firestore.`;
+                    noteEl.style.backgroundColor = '#ecfdf5';
+                    noteEl.style.borderColor = '#a7f3d0';
+                    noteEl.style.color = '#065f46';
+                } else {
+                    noteEl.innerHTML = `💡 <strong>Demonstração Local (LocalStorage):</strong> Exibindo dados locais do seu navegador. Configure suas chaves do Firebase para ver dados de todos os visitantes.`;
+                    noteEl.style.backgroundColor = '#fffbeb';
+                    noteEl.style.borderColor = '#fef3c7';
+                    noteEl.style.color = '#b45309';
+                }
+            }
+        }
+
+        if (isFirebaseConfigured && db) {
+            // Fetch and aggregate stats from Firestore
+            db.collection('inss_sessions').get().then(querySnapshot => {
+                let aggregated = {
+                    hero_clicks: 0,
+                    quiz_starts: 0,
+                    quiz_completions: 0,
+                    pix_generations: 0,
+                    clicks: {}
+                };
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.hero_clicks) aggregated.hero_clicks += data.hero_clicks;
+                    if (data.quiz_starts) aggregated.quiz_starts += data.quiz_starts;
+                    if (data.quiz_completions) aggregated.quiz_completions += data.quiz_completions;
+                    if (data.pix_generations) aggregated.pix_generations += data.pix_generations;
+                    
+                    if (data.clicks) {
+                        for (const [key, val] of Object.entries(data.clicks)) {
+                            aggregated.clicks[key] = (aggregated.clicks[key] || 0) + val;
+                        }
+                    }
+                });
+
+                renderStats(aggregated, true);
+            }).catch(err => {
+                console.error("Erro ao obter estatísticas do Firestore:", err);
+                // Fallback to local
+                renderStats(tracking.getStats(), false);
+            });
+        } else {
+            // Render local statistics
+            renderStats(tracking.getStats(), false);
+        }
+    }
+
+    function resetAdminStats() {
+        if (isFirebaseConfigured && db) {
+            if (confirm("Deseja realmente zerar todas as métricas no Firebase Firestore? Isso apagará todos os dados globais de todos os usuários.")) {
+                const tbody = document.getElementById('clicksTableBody');
+                tbody.innerHTML = `<tr><td colspan="2" style="padding: 12px; text-align: center; color: var(--text-muted);">Apagando dados...</td></tr>`;
+                
+                db.collection('inss_sessions').get().then(querySnapshot => {
+                    const batch = db.batch();
+                    querySnapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    return batch.commit();
+                }).then(() => {
+                    showAdminDashboard();
+                }).catch(err => {
+                    console.error("Erro ao zerar dados globais:", err);
+                    alert("Erro ao zerar dados no Firestore.");
+                    showAdminDashboard();
+                });
+            }
+        } else {
+            if (confirm("Deseja realmente zerar todas as métricas locais? Isso limpará o histórico local deste navegador.")) {
+                localStorage.removeItem('inss_stats');
+                tracking.init();
+                showAdminDashboard();
+            }
+        }
+    }
+
+    // Hash change event listeners
+    window.addEventListener('hashchange', checkRoute);
+    window.addEventListener('DOMContentLoaded', () => {
+        tracking.init();
+        checkRoute();
+    });
+
+    // App State Configuration
+    const state = {
+        currentStep: 1,
+        totalSteps: 8,
+        formData: {
+            idade: '',
+            trabalho: '',
+            afastado: '',
+            limitacao: '',
+            renda: '',
+            pessoas: '',
+            estado: '',
+            cidade: '',
+            nome: '',
+            email: '',
+            whatsapp: ''
+        }
+    };
+
+    // Show Quiz View
+    function startQuiz() {
+        tracking.track('hero_click');
+        tracking.track('quiz_start');
+        document.getElementById('landingView').classList.add('d-none');
+        document.getElementById('quizView').style.display = 'flex';
+        updateQuizStep();
+    }
+
+    // Toggle FAQ Accordions
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Track click
+        tracking.track('clique_faq', btn.innerText.trim());
+
+        // Close all items first
+        document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+        
+        // Toggle current clicked item
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    }
+
+    // Custom Radio Select Behavior
+    function selectOption(input) {
+        // Track option selected
+        tracking.track('resposta_quiz', `${input.name}: ${input.value}`);
+
+        // Unselect siblings
+        const optionsList = input.closest('.options-list');
+        optionsList.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+        
+        // Select current card
+        const card = input.closest('.option-card');
+        card.classList.add('selected');
+        
+        // Auto-advance radio steps after a tiny delay for high premium UX feedback
+        setTimeout(() => {
+            nextStep();
+        }, 300);
+    }
+
+    // Handle Quiz Navigation: Next Step
+    function nextStep() {
+        tracking.track('clique_botao', `Continuar da Pergunta ${state.currentStep}`);
+        if (!validateStep(state.currentStep)) {
+            return;
+        }
+
+        // Save current step input values to state
+        saveStepData(state.currentStep);
+
+        if (state.currentStep < state.totalSteps) {
+            state.currentStep++;
+            updateQuizStep();
+        }
+    }
+
+    // Handle Quiz Navigation: Previous Step
+    function prevStep() {
+        tracking.track('clique_botao', `Voltar da Pergunta ${state.currentStep}`);
+        if (state.currentStep > 1) {
+            state.currentStep--;
+            updateQuizStep();
+        } else {
+            // If on step 1, go back to Landing Page
+            document.getElementById('quizView').style.display = 'none';
+            document.getElementById('landingView').classList.remove('d-none');
+        }
+    }
+
+    // Save Data from DOM into State object
+    function saveStepData(step) {
+        const stepDiv = document.querySelector(`.quiz-step[data-step="${step}"]`);
+        
+        // 1. Save Radios
+        const radios = stepDiv.querySelectorAll('input[type="radio"]:checked');
+        if (radios.length > 0) {
+            const name = radios[0].name;
+            state.formData[name] = radios[0].value;
+        }
+
+        // 2. Save Selects
+        const selects = stepDiv.querySelectorAll('select');
+        selects.forEach(sel => {
+            state.formData[sel.name] = sel.value;
+        });
+
+        // 3. Save Inputs
+        const inputs = stepDiv.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+        inputs.forEach(inp => {
+            state.formData[inp.name] = inp.value;
+        });
+    }
+
+    // Validate inputs of the current step
+    function validateStep(step) {
+        const stepDiv = document.querySelector(`.quiz-step[data-step="${step}"]`);
+        let isValid = true;
+
+        // Radios validation
+        const radios = stepDiv.querySelectorAll('input[type="radio"]');
+        if (radios.length > 0) {
+            const checked = stepDiv.querySelector('input[type="radio"]:checked');
+            if (!checked) {
+                isValid = false;
+                // No explicit error element needed because it's radio boxes, but could alert.
+            }
+        }
+
+        // Selects validation
+        const selects = stepDiv.querySelectorAll('select');
+        selects.forEach(sel => {
+            const errorEl = document.getElementById(`error-${sel.name}`);
+            if (sel.required && !sel.value) {
+                isValid = false;
+                sel.classList.add('input-error');
+                if (errorEl) errorEl.style.display = 'block';
+            } else {
+                sel.classList.remove('input-error');
+                if (errorEl) errorEl.style.display = 'none';
+            }
+        });
+
+        // Text/Email/Tel Inputs validation
+        const inputs = stepDiv.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+        inputs.forEach(inp => {
+            const errorEl = document.getElementById(`error-${inp.name}`);
+            let isFieldValid = true;
+
+            if (inp.required && !inp.value.trim()) {
+                isFieldValid = false;
+            } else if (inp.type === 'email' && inp.value.trim()) {
+                // Email Regex
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(inp.value.trim())) {
+                    isFieldValid = false;
+                }
+            } else if (inp.type === 'tel' && inp.value.trim()) {
+                // WhatsApp Regex (needs minimum digits for mask format e.g., (11) 99999-9999 -> length 15)
+                if (inp.value.replace(/\D/g, '').length < 10) {
+                    isFieldValid = false;
+                }
+            }
+
+            if (!isFieldValid) {
+                isValid = false;
+                inp.classList.add('input-error');
+                if (errorEl) errorEl.style.display = 'block';
+            } else {
+                inp.classList.remove('input-error');
+                if (errorEl) errorEl.style.display = 'none';
+            }
+        });
+
+        return isValid;
+    }
+
+    // Triggered on input typing/changing to remove errors actively
+    function validateField(element) {
+        const errorEl = document.getElementById(`error-${element.name}`);
+        let isFieldValid = true;
+
+        if (element.required && !element.value.trim()) {
+            isFieldValid = false;
+        } else if (element.type === 'email' && element.value.trim()) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            isFieldValid = emailRegex.test(element.value.trim());
+        } else if (element.type === 'tel' && element.value.trim()) {
+            isFieldValid = element.value.replace(/\D/g, '').length >= 10;
+        }
+
+        if (isFieldValid) {
+            element.classList.remove('input-error');
+            if (errorEl) errorEl.style.display = 'none';
+        }
+    }
+
+    // Apply UI state updates for active steps
+    function updateQuizStep() {
+        // Toggle Steps visibility
+        document.querySelectorAll('.quiz-step').forEach(stepDiv => {
+            stepDiv.classList.remove('active');
+            if (parseInt(stepDiv.getAttribute('data-step')) === state.currentStep) {
+                stepDiv.classList.add('active');
+            }
+        });
+
+        // Update progress indicators
+        const progressPercentage = ((state.currentStep - 1) / state.totalSteps) * 100;
+        document.getElementById('progressFill').style.width = `${progressPercentage}%`;
+        document.getElementById('stepIndicator').innerText = `Pergunta ${state.currentStep} de ${state.totalSteps}`;
+
+        // Swap Next / Submit button visibility
+        if (state.currentStep === state.totalSteps) {
+            document.getElementById('nextBtn').classList.add('d-none');
+            document.getElementById('submitBtn').classList.remove('d-none');
+        } else {
+            document.getElementById('nextBtn').classList.remove('d-none');
+            document.getElementById('submitBtn').classList.add('d-none');
+        }
+    }
+
+    // WhatsApp input mask
+    function maskWhatsapp(e) {
+        const input = e.target;
+        let value = input.value.replace(/\D/g, "");
+        if (value.length > 11) value = value.slice(0, 11);
+
+        if (value.length > 10) {
+            // (XX) XXXXX-XXXX
+            input.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+        } else if (value.length > 6) {
+            // (XX) XXXX-XXXX
+            input.value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+        } else if (value.length > 2) {
+            // (XX) XXXX
+            input.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+        } else if (value.length > 0) {
+            // (XX
+            input.value = `(${value}`;
+        } else {
+            input.value = "";
+        }
+    }
+
+    // Submit Handler of Quiz Form
+    function handleQuizSubmit(event) {
+        event.preventDefault();
+        
+        // Final check on active step 8 validation
+        if (!validateStep(state.currentStep)) {
+            return;
+        }
+
+        saveStepData(state.currentStep);
+
+        // Track completion
+        tracking.track('quiz_complete');
+        tracking.track('clique_botao', 'Finalizar e Gerar Resumo');
+
+        // Hide quiz and display summary view
+        document.getElementById('quizView').style.display = 'none';
+        document.getElementById('summaryView').style.display = 'block';
+
+        // Render Dynamically tailored suggestions based on inputs (Neutral phrasing)
+        generateDynamicSummary();
+    }
+
+    // Logic to build the neutral summaries & checklist based on inputs
+    function generateDynamicSummary() {
+        const listContainer = document.getElementById('summaryList');
+        const docsContainer = document.getElementById('unlockedDocsList');
+        listContainer.innerHTML = '';
+        docsContainer.innerHTML = '';
+
+        // Initial default suggestion
+        let topics = [];
+        let docs = [];
+
+        // Rules based on age
+        if (state.formData.idade === '65 anos ou mais') {
+            topics.push({
+                title: 'Aposentadoria por Idade',
+                desc: 'Consulte os requisitos gerais de idade e tempo mínimo de contribuição exigidos para essa faixa etária.'
+            });
+            docs.push('Documento de Identidade oficial com foto (RG ou CNH)', 'Comprovante de residência atualizado', 'Extrato de Contribuição CNIS completo');
+
+            if (state.formData.renda === 'Até 1 salário mínimo') {
+                topics.push({
+                    title: 'Benefício Assistencial (BPC/LOAS) - Idoso',
+                    desc: 'Verifique os critérios de renda per capita familiar e a obrigatoriedade da inscrição atualizada no Cadastro Único.'
+                });
+                docs.push('Inscrição ativa e atualizada no Cadastro Único (CadÚnico)', 'CPF de todos os membros do núcleo familiar que moram na residência');
+            }
+        } else if (state.formData.idade === '60 a 64 anos') {
+            topics.push({
+                title: 'Aposentadoria por Tempo de Contribuição / Regras de Transição',
+                desc: 'Avalie as regras de transição estabelecidas pela Reforma da Previdência em vigor.'
+            });
+            docs.push('Documento de Identidade oficial com foto (RG/CNH)', 'Carteiras de Trabalho físicas (CTPS) e contratos antigos', 'Extrato CNIS');
+        }
+
+        // Rules based on health
+        if (state.formData.afastado === 'Sim' || state.formData.limitacao === 'Sim') {
+            topics.push({
+                title: 'Benefício por Incapacidade Temporária (antigo Auxílio-Doença)',
+                desc: 'Consulte os critérios de carência e a obrigatoriedade de agendamento de perícia médica oficial do INSS.'
+            });
+            topics.push({
+                title: 'Benefício por Incapacidade Permanente / Aposentadoria por Invalidez',
+                desc: 'Conheça o processo de avaliação de incapacidade laboral de caráter permanente.'
+            });
+            
+            docs.push('Atestado médico recente contendo diagnóstico, CID e assinatura/carimbo legíveis', 'Laudos médicos, exames complementares e receitas que comprovem o tratamento atual', 'Declaração do último dia trabalhado (DUT) fornecida pelo empregador (se aplicável)');
+
+            if (state.formData.renda === 'Até 1 salário mínimo' && state.formData.idade !== '65 anos ou mais') {
+                topics.push({
+                    title: 'Benefício Assistencial (BPC/LOAS) - Pessoa com Deficiência',
+                    desc: 'Consulte as diretrizes e regras relativas à incapacidade a longo prazo para o trabalho com base na renda declarada.'
+                });
+                docs.push('Cadastro Único (CadÚnico) com dados atualizados nos últimos 2 anos', 'Laudo médico atestando a limitação física ou mental de longo prazo');
+            }
+        }
+
+        // Rules based on employment status
+        if (state.formData.trabalho === 'Desempregado') {
+            topics.push({
+                title: 'Manutenção da Qualidade de Segurado (Período de Graça)',
+                desc: 'Verifique por quanto tempo você ainda mantém o direito de solicitar benefícios do INSS mesmo sem efetuar novas contribuições diretas.'
+            });
+            docs.push('Rescisão de contrato de trabalho anterior', 'Comprovantes de recebimento de seguro-desemprego (se aplicável)', 'Extrato de contribuições previdenciárias antigas');
+        } else if (state.formData.trabalho === 'Autônomo') {
+            topics.push({
+                title: 'Recolhimento Previdenciário do Contribuinte Individual',
+                desc: 'Entenda os planos simplificados de alíquota de contribuição (11% ou 20%) e seus impactos em futuros benefícios.'
+            });
+            docs.push('Guias de Previdência Social (GPS) pagas recentemente', 'Comprovantes de prestação de serviços ou DAS (se Microempreendedor Individual - MEI)');
+        }
+
+        // Fallback or generic topics if nothing specific was caught
+        if (topics.length === 0) {
+            topics.push({
+                title: 'Regras de Carência e Qualidade de Segurado',
+                desc: 'Descubra a importância de se manter contribuindo para estar protegido pelas coberturas previdenciárias comuns.'
+            });
+            docs.push('Documento de Identidade oficial com foto (RG ou CNH)', 'Extrato de Contribuição CNIS atualizado');
+        }
+
+        // Always add general consultation topic
+        topics.push({
+            title: 'Consulta Oficial de Contribuições (CNIS)',
+            desc: 'Verifique se todos os seus períodos trabalhados estão anotados corretamente no sistema oficial Meu INSS.'
+        });
+
+        // Render List in DOM (Summary Page)
+        topics.forEach(t => {
+            const li = document.createElement('li');
+            li.className = 'summary-item';
+            li.innerHTML = `
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <div>
+                    <strong>${t.title}:</strong> ${t.desc}
+                </div>
+            `;
+            listContainer.appendChild(li);
+        });
+
+        // Render Documents Checklist in DOM (Unlocked Report)
+        // Deduplicate docs list
+        const uniqueDocs = [...new Set(docs)];
+        uniqueDocs.forEach(d => {
+            const li = document.createElement('li');
+            li.className = 'report-list-item';
+            li.innerHTML = `
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <div>${d}</div>
+            `;
+            docsContainer.appendChild(li);
+        });
+    }
+
+
+
+    // PAYMENT MODAL INTERACTION
+    // PAYMENT MODAL INTERACTION
+    let modalCountdownInterval;
+    let pixPollingInterval = null;
+    
+    function openPaymentModal() {
+        tracking.track('pix_generate');
+        tracking.track('clique_botao', 'Gerar Pix');
+        const modal = document.getElementById('paymentModal');
+        modal.style.display = 'flex';
+        
+        // Reset and start countdown timer (10 minutes)
+        let totalSeconds = 600;
+        const countdownEl = document.getElementById('countdown');
+        
+        if (modalCountdownInterval) clearInterval(modalCountdownInterval);
+        
+        modalCountdownInterval = setInterval(() => {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            
+            countdownEl.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (totalSeconds <= 0) {
+                clearInterval(modalCountdownInterval);
+                closePaymentModal();
+            }
+            totalSeconds--;
+        }, 1000);
+
+        // Generate actual Pix from Pushin Pay
+        generatePixPayment();
+    }
+
+    function closePaymentModal() {
+        tracking.track('clique_botao', 'Fechar Modal Pix');
+        document.getElementById('paymentModal').style.display = 'none';
+        if (modalCountdownInterval) clearInterval(modalCountdownInterval);
+        if (pixPollingInterval) {
+            clearInterval(pixPollingInterval);
+            pixPollingInterval = null;
+        }
+    }
+
+
+
+    async function generatePixPayment() {
+        // Reset container to default template
+        const container = document.getElementById('pixQrContainer');
+        container.innerHTML = `
+            <img id="pixQrImg" src="" alt="QR Code PIX" style="width:100%; height:100%; object-fit:contain; display:none;">
+            <div id="pixQrLoading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:8px;">
+                <div class="spinner"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Gerando PIX...</span>
+            </div>
+        `;
+
+        const img = document.getElementById('pixQrImg');
+        const loading = document.getElementById('pixQrLoading');
+        const codeText = document.getElementById('pixCode');
+        
+        img.style.display = 'none';
+        loading.style.display = 'flex';
+        codeText.innerText = 'Gerando...';
+        
+        const API_URL = "https://api.pushinpay.com.br/api/pix/cashIn";
+        const TOKEN = "67372|Htqf5uQuNBFIlDtRwBOnIdfo7sHNGclmNjrB0CMqf43cc0e5";
+        
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${TOKEN}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    value: 499, // R$ 4,99 em centavos
+                    webhook_url: "https://seudominio.com/webhook/pushinpay"
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                const transactionId = data.id;
+                const qrCode = data.qr_code;
+                const qrCodeBase64 = data.qr_code_base64;
+                
+                // Exibe imagem do QR Code decodificada da base64
+                if (qrCodeBase64) {
+                    let imgSrc = qrCodeBase64.trim();
+                    if (!imgSrc.startsWith('data:image')) {
+                        imgSrc = `data:image/png;base64,${imgSrc}`;
+                    }
+                    img.src = imgSrc;
+                } else if (qrCode) {
+                    // Fallback para gerador de QR Code público caso a base64 não exista
+                    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCode)}`;
+                }
+                img.style.display = 'block';
+                loading.style.display = 'none';
+                
+                // Adiciona chave copia e cola
+                codeText.innerText = qrCode;
+                
+                // Inicia consulta a cada 2 segundos
+                startPixPolling(transactionId);
+            } else {
+                console.error("Erro ao gerar PIX:", response.status, await response.text());
+                showPixGenerationError();
+            }
+        } catch (err) {
+            console.error("Erro de conexão ao gerar PIX:", err);
+            showPixGenerationError();
+        }
+    }
+
+    function showPixGenerationError() {
+        const container = document.getElementById('pixQrContainer');
+        container.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-align:center; padding:10px; gap:8px;">
+                <svg width="24" height="24" fill="var(--error)" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                <span style="font-size:0.8rem; font-weight:bold; color:var(--error);">Falha na conexão</span>
+                <span style="font-size:0.7rem; color:var(--text-muted);">Não foi possível gerar a cobrança.</span>
+                <button type="button" class="btn btn-secondary" style="padding:6px 12px; font-size:0.75rem; border-radius:var(--radius-sm); width:auto;" onclick="tracking.track('clique_botao', 'Tentar Gerar Pix Novamente'); generatePixPayment()">Tentar novamente</button>
+            </div>
+        `;
+        document.getElementById('pixCode').innerText = 'Erro ao gerar PIX';
+    }
+
+    function startPixPolling(transactionId) {
+        if (pixPollingInterval) clearInterval(pixPollingInterval);
+        
+        const POLLING_TOKEN = "62133|gD7m59ZAlFsPeLDZ14T512Byv7PoY2TNocGw2TTy1d28a226";
+        const url_verificar = `https://api.pushinpay.com.br/api/transactions/${transactionId}`;
+        
+        pixPollingInterval = setInterval(async () => {
+            try {
+                const response = await fetch(url_verificar, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${POLLING_TOKEN}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.status === 'paid') {
+                        clearInterval(pixPollingInterval);
+                        pixPollingInterval = null;
+                        simulatePaymentApproval(); // Transiciona para tela de sucesso
+                    }
+                }
+            } catch (err) {
+                console.error("Erro ao verificar status do PIX:", err);
+            }
+        }, 2000); // Consulta a cada 2 segundos
+    }
+
+    // Clipboard copy code simulated
+    function copyPixCode() {
+        tracking.track('clique_botao', 'Copiar Codigo Pix');
+        const pixText = document.getElementById('pixCode').innerText;
+        if (pixText === 'Gerando...' || pixText === 'Erro ao gerar PIX') return;
+        navigator.clipboard.writeText(pixText).then(() => {
+            const feedback = document.getElementById('pixFeedback');
+            feedback.style.display = 'block';
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 2000);
+        });
+    }
+
+
+
+    // Confirm simulated payment (Simulation flow)
+    function simulatePaymentApproval() {
+        tracking.track('clique_botao', 'Confirmar Pagamento Simulado');
+        closePaymentModal();
+        
+        // Populate customer info in success view
+        document.getElementById('successTargetEmail').innerText = state.formData.email || 'seuemail@provedor.com';
+        document.getElementById('successTargetNome').innerText = state.formData.nome || 'Nome não preenchido';
+        document.getElementById('successTargetWhatsapp').innerText = state.formData.whatsapp || 'WhatsApp não preenchido';
+
+        // Transition: Hide summary and display paymentSuccessView
+        document.getElementById('summaryView').style.display = 'none';
+        document.getElementById('paymentSuccessView').style.display = 'block';
+        
+        // Scroll back to top to read comfortably
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Return to landing page after viewing the report
+    function resetToHome() {
+        tracking.track('clique_botao', 'Voltar ao Inicio');
+        document.getElementById('unlockedReportView').style.display = 'none';
+        document.getElementById('paymentSuccessView').style.display = 'none';
+        document.getElementById('landingView').classList.remove('d-none');
+        
+        if (pixPollingInterval) {
+            clearInterval(pixPollingInterval);
+            pixPollingInterval = null;
+        }
+        
+        // Reset states
+        state.currentStep = 1;
+        state.formData = {
+            idade: '', trabalho: '', afastado: '', limitacao: '',
+            renda: '', pessoas: '', estado: '', cidade: '',
+            nome: '', email: '', whatsapp: ''
+        };
+        
+        // Clear forms
+        document.getElementById('quizForm').reset();
+        document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+    }
+
+</script>
+</body>
+</html>
